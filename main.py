@@ -2,6 +2,7 @@ from pathlib import Path
 import skeletonkey as sk
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
+from tabulate import tabulate
 
 
 def load_name_data(file: Path | str) -> list[tuple[str, str, int]]:
@@ -88,13 +89,17 @@ def plot_sorted_names_with_labels(
 def main(cfg):
     name_path = Path(cfg.name_path)
 
-    names = load_name_data(name_path)
-    print(find_top_n_longest_lexi_names(names))
+    if cfg.find_most_popular_lexi_name:
+        names = load_name_data(name_path)
+        longest_lexi_names = find_top_n_longest_lexi_names(names)
+        longest_lexi_names.insert(0, ("Name", "Gender", "Count",))
+        print(tabulate(longest_lexi_names, headers='firstrow'))
 
-    plot_sorted_names_with_labels(
-        name_path.parent,
-        normalize_by_frequency=True,
-    )
+    if cfg.plot_lexi_names_by_year:
+        plot_sorted_names_with_labels(
+            cfg.data_dir,
+            normalize_by_frequency=True,
+        )
 
 
 if __name__ == "__main__":

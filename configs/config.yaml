@@ -1,1 +1,5 @@
+find_most_popular_lexi_name: true
+plot_lexi_names_by_year: true
+
 name_path: names/yob2023.txt
+data_dir: names
